@@ -1,0 +1,23 @@
+Number of Orders     |        Single-threaded results        |         Multi-threaded results
+500					 |  28481 milliseconds (28.481 seconds)  |  12409 milliseconds (12.409 seconds)
+100					 |	  464 milliseconds (.464 seconds)  	 |	 2965 milliseconds (2.965 seconds)
+25					 |	  275 milliseconds (.275 seconds)	 |	 1056 milliseconds (1.056 seconds)
+
+Explanation:
+
+	In the data.zip file, there were 500 orders. For my single-threaded approach, what I did was I used a
+for-loop that would create a new purchase order that would be assigned to a single initialized instance
+of the purchase order, passing in a single class that had a data set that would be shared by all purchase
+orders. Each purchase order would derive its information from a different file, and it would then modify the
+shared data set. This would happen one by one in the main thread, and it took approximately 30 seconds. For
+the multi-threaded approach, I made sure to synchronize the part in the method (fillOrder()) in which the actual
+modification of the data set was taking place. Then, I would create an ArrayList of threads, start all of these
+threads, and then join all of them. When creating the threads, I would use a for-loop that would populate the
+newly created purchase orders with different file names, and put these in the threads that would actually 
+populate the ArrayList. I started the system timing before the starting of all the threads, and then ended it
+after the joining was done and the shared orders data set had all the necessary information. One key observation
+I made was that if the timing for the multi-threaded approach started before the actual creation of the threads,
+it would not take less time than the single-threaded approach, in fact, it might even take longer. The actual
+starting and joining of the threads, however, would take much less time than just the single-threaded approach.
+The effectiveness of using multiple threads is more prevalent in larger data sets than smaller ones (the 500 order
+data came from processing the LargeSet data files in the data.zip file).
